@@ -127,3 +127,54 @@ p.artist_links {
 	word-spacing: 14px;
 	padding-bottom: 20px;
 }
+
+#information {
+	display: none;
+	text-align: left;
+	font-size: 10px;
+	-webkit-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+	text-rendering:optimizeLegibility;
+	line-height: 15px;
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	color: white;
+	z-index: 5;
+}
+
+#information em {
+	margin: 0;
+	font-style: normal;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+#information em, #information span, #information strong {
+	font-size: 13px;
+	line-height: 19px;
+}
+
+#information span {
+	margin-right: 8px;
+}
+
+a.contact {
+	-webkit-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+	text-rendering:optimizeLegibility;
+	font-size: 13px;
+	color: #333;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+a.contact em {
+	font-size: 18px;
+  font-style: normal;
+}
+
+a.contact:hover {
+	text-decoration: underline;
+}

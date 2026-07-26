@@ -6,8 +6,26 @@
         <title>Midhir Records - Extreme music record label based in Belfast</title>
         <meta name="viewport" content="width=device-width">
 
+				<!--  Open Graph -->
+				<meta property="og:url" content="http://www.midhirrecords.com/" />
+				<meta property="og:site_name" content="Midhir Records" />
+				<meta property="og:type" content="website" />
+				<meta property="og:title" content="Midhir Records" />
+				<meta property="og:image" content="http://www.midhirrecords.com/assets/images/logos/midhir_logo_black.png" />
+				<meta property="og:description" content="Extreme music record label based in Belfast. 2004 - 2009." />
+				
+				<!-- Twitter -->
+				<meta name="twitter:card" content="summary">
+				<meta name="twitter:url" content="http://www.midhirrecords.com/">
+				<meta name="twitter:title" content="Midhir Records">
+				<meta name="twitter:description" content="Extreme music record label based in Belfast. 2004 - 2009.">
+				<meta name="twitter:image" content="http://www.midhirrecords.com/assets/images/logos/midhir_logo_black.png">
+
         <!-- Custom CSS -->
         <link rel="stylesheet" href="/css/main.css">
+
+				<!-- Favicon -->
+				<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 
 				<!--  Google font -->
 				<link href='http://fonts.googleapis.com/css?family=Lustria' rel='stylesheet' type='text/css'>
@@ -19,7 +37,7 @@
 				<!-- Other scripts -->
 				<script src="javascripts/easing.js"></script>
 				<script src="javascripts/main.js"></script>
-
+				
     </head>
     <body>
 			<div id="underlay">
@@ -27,6 +45,13 @@
 	</div>
 	<div id="overlay">
 	</div>
+</div>
+<div id="information">
+	Artwork detail from<br />
+	<strong class="album">Reawakening Pride Once Lost</strong><br />
+	<em class="artist">Waylander</em><br />
+	<span class="label">Midhir Records</span><span class="year">2009</span><span class="format">(CD)</span>
+	</span>
 </div>
 <div class="container">
 	<div id="logo_container">
@@ -36,15 +61,53 @@
 		</div>
 	</div>
 	<p class="artist_links">
-		<a href="http://symbel.bandcamp.com/" class="artist_link" data-image="symbel_forests_sized.jpg"><em>S</em>ymbel</a>,
-		<a href="http://hexxed.bandcamp.com/" class="artist_link" data-image="hexxed_gods_sized.jpg"><em>H</em>exxed</a>,
-		<a href="http://www.clanwaylander.com/" class="artist_link" data-image="waylander_band_compressed.jpg"><em>W</em>aylander</a> &amp;
-		<a href="http://scald.me.uk/" class="artist_link" data-image="scald_room.jpg"><em>S</em>cald</a>.
+		<a href="http://symbel.bandcamp.com/" class="artist_link" target="_blank" data-image="symbel_forests_sized.jpg" data-artist="Symbel" data-album="Wet English Forests" data-format="10&rdquo; MLP" data-year="2004">
+			<em>S</em>ymbel</a>,
+		<a href="http://hexxed.bandcamp.com/" class="artist_link" target="_blank" data-image="hexxed_gods_sized.jpg" data-artist="Hexxed" data-album="Where Gods Look Away" data-format="7&rdquo; EP" data-year="2005">
+			<em>H</em>exxed</a>,
+		<a href="http://www.clanwaylander.com/" class="artist_link" target="_blank" data-image="waylander_band_compressed.jpg" data-artist="Waylander" data-album="Reawakening Pride Once Lost" data-format="CD" data-year="2006">
+			<em>W</em>aylander</a> &amp;
+		<a href="http://scald.me.uk/" class="artist_link" target="_blank" data-image="scald_room.jpg" data-artist="Scald" data-album="Fluke" data-format="Mini-CD" data-year="2008">
+			<em>S</em>cald</a>.
 	</p>
-	<audio controls height="100" width="100" style="display:none;">
-	  <source src="horse.mp3" type="audio/mpeg">
-	  <source src="horse.ogg" type="audio/ogg">
-	</audio>
+	<p>
+		<a href="http://twitter.com/midhir" class="contact"><em>C</em>ommunion.</a>
+	</p>
 </div>
+			
+			<!--  GA -->
+			<script type="text/javascript">
+
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-3768167-1']);
+			  _gaq.push(['_setDomainName', 'midhirrecords.com']);
+			  _gaq.push(['_trackPageview']);
+
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+
+			</script>
+			
+			<!-- GoSquared cuz GA acting the maggot -->
+			<script type="text/javascript">
+			  var GoSquared = {};
+			  GoSquared.acct = "GSN-625863-F";
+			  (function(w){
+			    function gs(){
+			      w._gstc_lt = +new Date;
+			      var d = document, g = d.createElement("script");
+			      g.type = "text/javascript";
+			      g.src = "//d1l6p2sc9645hc.cloudfront.net/tracker.js";
+			      var s = d.getElementsByTagName("script")[0];
+			      s.parentNode.insertBefore(g, s);
+			    }
+			    w.addEventListener ?
+			      w.addEventListener("load", gs, false) :
+			      w.attachEvent("onload", gs);
+			  })(window);
+			</script>
     </body>
 </html>
