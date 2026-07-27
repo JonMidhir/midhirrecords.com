@@ -36,15 +36,17 @@ page with no hover effects; every link still works.
 index.html                  the whole page
 css/main.css                the whole interaction
 favicon.ico
+CNAME                       custom domain for GitHub Pages
+.github/workflows/deploy.yml  build and deploy
 assets/images/              artwork used by the site
 assets/images/Source/       master files, not deployed
 assets/images/logos/
-s3_website.yml.example      copy to s3_website.yml and fill in credentials
 ```
 
 Several images in `assets/images/` are unused by the page and kept only as
-archive. They are listed under `exclude_from_upload` in `s3_website.yml` so they
-stay out of the bucket.
+archive. The deploy workflow publishes an explicit **allowlist** of files rather
+than excluding known-bad ones, so anything not named in the `Assemble site` step
+never reaches the web. Adding a release means adding its image to that list.
 
 ## Local preview
 
@@ -59,23 +61,40 @@ Then open <http://localhost:8000>.
 
 ## Deploying
 
-The site is a static S3 website bucket, deployed with the
-[s3_website](https://github.com/laurilehmijoki/s3_website) gem:
+The site is hosted on GitHub Pages. Pushing to `master` triggers
+`.github/workflows/deploy.yml`, which assembles `_site/` from the allowlist,
+stamps the revision comment, and publishes. There are no credentials anywhere —
+deployment uses the workflow's OIDC token.
 
-```sh
-cp s3_website.yml.example s3_website.yml   # first time only; fill in credentials
-s3_website push
+To deploy, push. To deploy without a change, run the workflow manually from the
+Actions tab (`workflow_dispatch`).
+
+The first line of served HTML records which build is live:
+
+```html
+<!-- Revised: 2026-07-28 12:00 UTC | commit: abc1234 | built by GitHub Pages -->
 ```
 
-`s3_website.yml` holds AWS credentials and is gitignored. Never commit it.
+In a working copy that line reads `build: local`. If you view source on the live
+site and see `build: local`, you are looking at a stale cache or the old S3
+bucket, not Pages.
+
+### DNS
+
+Set at 34SP; GitHub Pages serves both apex and `www` over HTTPS.
+
+```
+@    A      185.199.108.153
+@    A      185.199.109.153
+@    A      185.199.110.153
+@    A      185.199.111.153
+www  CNAME  jonmidhir.github.io.
+```
+
+`CNAME` in the repo root holds `www.midhirrecords.com`, so GitHub redirects the
+apex to `www`, matching the canonical URL in the Open Graph tags.
 
 ### Known outstanding work
 
-- **The site is served over plain HTTP only.** There is no certificate on the
-  bucket, so browsers mark it "Not secure" and the apex domain does not resolve.
-  Putting CloudFront with an ACM certificate (or Cloudflare) in front of the
-  bucket fixes both.
-- The deploy still relies on a long-lived IAM access key. GitHub Actions with
-  OIDC would remove the key from local disk entirely.
 - The background images are full-size JPEGs. AVIF or WebP derivatives would cut
   the page weight substantially.

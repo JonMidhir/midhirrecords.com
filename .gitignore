@@ -1,2 +1,5 @@
-s3_website.yml
+_site/
 *.mov
+
+# Kept as a safety net until the old credentials file is deleted from disk.
+s3_website.yml

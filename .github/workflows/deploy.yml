@@ -1,0 +1,63 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish; queue at most one more behind it.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Allowlist, not a denylist: only these paths are published. Master
+      # artwork and unreferenced images stay in the repo and never ship.
+      # Adding a release means adding its image here.
+      - name: Assemble site
+        run: |
+          set -euo pipefail
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            install -D "$f" "_site/$f"
+          done <<'FILES'
+          index.html
+          CNAME
+          favicon.ico
+          css/main.css
+          assets/images/symbel_forests_sized.jpg
+          assets/images/hexxed_gods_sized.jpg
+          assets/images/waylander_band_compressed.jpg
+          assets/images/scald_room.jpg
+          assets/images/logos/midhir_logo_black.png
+          assets/images/logos/midhir_logo_white.png
+          assets/images/logos/midhir_logo_text.png
+          FILES
+          find _site -type f | sort
+
+      # Stamp the served copy so view-source proves which build is live.
+      - name: Stamp revision
+        run: |
+          stamp="<!-- Revised: $(date -u +%Y-%m-%d\ %H:%M\ UTC) | commit: ${GITHUB_SHA:0:7} | built by GitHub Pages -->"
+          sed -i "s#<!-- Revised:.*-->#${stamp}#" _site/index.html
+          grep -m1 'Revised:' _site/index.html
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
