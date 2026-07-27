@@ -43,10 +43,14 @@ assets/images/Source/       master files, not deployed
 assets/images/logos/
 ```
 
-Several images in `assets/images/` are unused by the page and kept only as
-archive. The deploy workflow publishes an explicit **allowlist** of files rather
-than excluding known-bad ones, so anything not named in the `Assemble site` step
-never reaches the web. Adding a release means adding its image to that list.
+Every image in `assets/images/` is used by the page. `assets/images/Source/`
+holds the high-res masters the deployed JPEGs were cut from; they are archive
+only and never deployed.
+
+The deploy workflow publishes an explicit **allowlist** of files rather than
+excluding known-bad ones, so anything not named in the `Assemble site` step —
+including everything under `Source/` — never reaches the web. Adding a release
+means adding its image to that list.
 
 ## Local preview
 
