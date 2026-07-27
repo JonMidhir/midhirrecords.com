@@ -1,97 +1,121 @@
 /*****************************************************************************/
 /*
-/* Common
+/* Midhir Records
+/*
+/* The whole hover interaction is CSS only. Each artist link has a matching
+/* background layer (.image--*) and info block (.release--*); `body:has()`
+/* correlates the hovered/focused link with the pair that should show.
 /*
 /*****************************************************************************/
 
-/* Global Reset */
-* {
-  margin: 0;
-  padding: 0;
+:root {
+	/* easeInOutCubic, matching the original jQuery easing */
+	--ease: cubic-bezier(0.65, 0, 0.35, 1);
+	--fade-image: 1s;
+	--fade-overlay: 1.6s;
+	--fade-logo: 1.6s;
 }
 
-html, body { height: 100%; }
+/* Global reset */
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html,
+body { height: 100%; }
 
 body {
-  background-color: #FFF;
-  font: 24px 'Lustria', serif;
-	line-height: 32px;
-  text-align: center;
+	background-color: #fff;
+	color: #333;
+	font: 24px/32px 'Lustria', serif;
+	text-align: center;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-size: 100%; }
-
-h1 { margin-bottom: 1em; }
-p { margin: 1em 0; }
-
-a         { color: #00a; }
-a:hover   { color: #000; }
-a:visited { color: #a0a; }
-
-table {
-  font-size: inherit;
-  font: 100%;
-}
-
-/* Underlay styles */
+/*****************************************************************************/
+/* Underlay                                                                  */
+/*****************************************************************************/
 
 #underlay {
 	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
+	inset: 0;
 	z-index: 1;
 }
 
-#image_holder, #image_holder div.image {
+#image_holder {
 	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+	inset: 0;
 	z-index: 2;
 }
 
-#image_holder div.image {
+/* Kept ID-free so the `body:has()` rules below can win on specificity. */
+.image {
+	position: absolute;
+	inset: 0;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
+	opacity: 0;
+	transform: scale(1.01);
+	transition:
+		opacity var(--fade-image) var(--ease),
+		transform var(--fade-image) var(--ease);
 }
+
+.image--symbel    { background-image: url('/assets/images/symbel_forests_sized.jpg'); }
+.image--hexxed    { background-image: url('/assets/images/hexxed_gods_sized.jpg'); }
+.image--waylander { background-image: url('/assets/images/waylander_band_compressed.jpg'); }
+.image--scald     { background-image: url('/assets/images/scald_room.jpg'); }
 
 #overlay {
 	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-image: -webkit-radial-gradient(top center, ellipse cover, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.95) 90%);
-	background-image: -moz-radial-gradient(top center, ellipse cover, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.95) 90%);
+	inset: 0;
 	z-index: 3;
-	display: none;
+	background-image: radial-gradient(
+		ellipse farthest-corner at top center,
+		rgba(0, 0, 0, 0.2) 0%,
+		rgba(0, 0, 0, 0.95) 90%
+	);
+	opacity: 0;
+	transition: opacity var(--fade-overlay) ease;
 }
 
-/* Content styles */
+/*****************************************************************************/
+/* Content                                                                   */
+/*****************************************************************************/
 
 .container {
-	position:relative;
+	position: relative;
 	z-index: 4;
 }
 
 #logo_container {
+	position: relative;
 	height: 330px;
 	width: 300px;
-	margin: 15px auto 0px;
-	background: url('/assets/images/logos/midhir_logo_black.png') no-repeat top center;
-	-webkit-transition: all 1.6s ease;
-  -moz-transition: all 1.6s ease;
-  -o-transition: all 1.6s ease;
-  transition: all 1.6s ease;
+	margin: 15px auto 0;
 }
 
-#logo_container.white {
+#logo_container .logo {
+	position: absolute;
+	inset: 0;
+	background-repeat: no-repeat;
+	background-position: top center;
+	background-size: contain;
+	transition: opacity var(--fade-logo) ease;
+}
+
+.logo--black {
+	background-image: url('/assets/images/logos/midhir_logo_black.png');
+	opacity: 1;
+}
+
+.logo--white {
 	background-image: url('/assets/images/logos/midhir_logo_white.png');
+	opacity: 0;
 }
 
 #logo_text {
@@ -101,68 +125,40 @@ table {
 }
 
 #logo_text .logo_text {
-	height: 120px;
-	width: 300px;
+	height: 100%;
+	width: 100%;
 	background: url('/assets/images/logos/midhir_logo_text.png') no-repeat top center;
 	background-size: 75% 75%;
+	transition: opacity 1s ease;
 }
 
-/* Typography */
+/*****************************************************************************/
+/* Typography                                                                */
+/*****************************************************************************/
 
 a.artist_link {
 	color: #333;
 	text-decoration: none;
 	text-transform: uppercase;
 	letter-spacing: 1px;
+	transition: color var(--fade-image) var(--ease);
 }
 
 a.artist_link em {
 	font-size: 34px;
-  font-style: normal;
+	font-style: normal;
 }
 
-/* sections */
-
 p.artist_links {
+	margin: 1em 0;
 	word-spacing: 14px;
 	padding-bottom: 20px;
 }
 
-#information {
-	display: none;
-	text-align: left;
-	font-size: 10px;
-	-webkit-font-smoothing: antialiased;
-	font-smoothing: antialiased;
-	text-rendering:optimizeLegibility;
-	line-height: 15px;
-	position: fixed;
-	top: 10px;
-	left: 10px;
-	color: white;
-	z-index: 5;
-}
-
-#information em {
-	margin: 0;
-	font-style: normal;
-	text-decoration: none;
-	text-transform: uppercase;
-}
-
-#information em, #information span, #information strong {
-	font-size: 13px;
-	line-height: 19px;
-}
-
-#information span {
-	margin-right: 8px;
-}
-
 a.contact {
 	-webkit-font-smoothing: antialiased;
-	font-smoothing: antialiased;
-	text-rendering:optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
 	font-size: 13px;
 	color: #333;
 	text-decoration: none;
@@ -172,9 +168,115 @@ a.contact {
 
 a.contact em {
 	font-size: 18px;
-  font-style: normal;
+	font-style: normal;
 }
 
-a.contact:hover {
+a.contact:hover,
+a.contact:focus-visible {
 	text-decoration: underline;
+}
+
+/*****************************************************************************/
+/* Release information                                                       */
+/*****************************************************************************/
+
+#information {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	z-index: 5;
+	text-align: left;
+	color: #fff;
+	font-size: 10px;
+	line-height: 15px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+/* Kept ID-free so the `body:has()` rules below can win on specificity. */
+.release {
+	position: absolute;
+	top: 0;
+	left: 0;
+	white-space: nowrap;
+	opacity: 0;
+	transition: opacity var(--fade-overlay) ease;
+}
+
+#information em {
+	font-style: normal;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+#information em,
+#information span,
+#information strong {
+	font-size: 13px;
+	line-height: 19px;
+}
+
+#information span {
+	margin-right: 8px;
+}
+
+/*****************************************************************************/
+/* Hover / focus states                                                      */
+/*****************************************************************************/
+
+/* Shared: any artist link is active */
+body:has(.artist_link:is(:hover, :focus-visible)) #overlay { opacity: 1; }
+body:has(.artist_link:is(:hover, :focus-visible)) .logo--black { opacity: 0; }
+body:has(.artist_link:is(:hover, :focus-visible)) .logo--white { opacity: 0.8; }
+body:has(.artist_link:is(:hover, :focus-visible)) #logo_text .logo_text { opacity: 0; }
+
+a.artist_link:is(:hover, :focus-visible) { color: #eee; }
+
+/* Per artist: reveal the matching background and release info */
+body:has(.artist_link--symbel:is(:hover, :focus-visible)) :is(.image--symbel, .release--symbel),
+body:has(.artist_link--hexxed:is(:hover, :focus-visible)) :is(.image--hexxed, .release--hexxed),
+body:has(.artist_link--waylander:is(:hover, :focus-visible)) :is(.image--waylander, .release--waylander),
+body:has(.artist_link--scald:is(:hover, :focus-visible)) :is(.image--scald, .release--scald) {
+	opacity: 1;
+	transform: none;
+}
+
+/*****************************************************************************/
+/* Small screens                                                             */
+/*****************************************************************************/
+
+@media (max-width: 600px) {
+	body {
+		font-size: 18px;
+		line-height: 26px;
+	}
+
+	#logo_container {
+		height: 231px;
+		width: 210px;
+	}
+
+	#logo_text {
+		height: 84px;
+		width: 210px;
+	}
+
+	a.artist_link em { font-size: 26px; }
+
+	p.artist_links { word-spacing: 8px; }
+}
+
+/*****************************************************************************/
+/* Reduced motion                                                            */
+/*****************************************************************************/
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+	}
+
+	.image { transform: none; }
 }

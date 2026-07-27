@@ -42,3 +42,14 @@ s3_bucket: www.midhirrecords.com
 #       host_name: blog.example.com
 #       replace_key_prefix_with: some_new_path/
 #       http_redirect_code: 301
+
+# Master artwork and unreferenced images live in the repo but are not part of
+# the deployed site.
+exclude_from_upload:
+  - assets/images/Source/.*
+  - assets/images/aeronalfrey121\.jpg
+  - assets/images/baphomet\.jpg
+  - assets/images/helvete\.jpg
+  - assets/images/Pope\.jpg
+  - assets/images/symbel_band\.jpg
+  - assets/images/symbel_forests_sized2\.jpg
